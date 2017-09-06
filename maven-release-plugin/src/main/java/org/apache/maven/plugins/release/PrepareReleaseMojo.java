@@ -20,6 +20,7 @@ package org.apache.maven.plugins.release;
  */
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -238,6 +239,14 @@ public class PrepareReleaseMojo
     private String projectTagNamingPolicyId;
 
     /**
+      * A list of additional include filters that will be commited with pom files.
+      *
+      * @since 3.0.0
+      */
+     @Parameter
+     private String[] additionalCommittedIncludes;
+
+    /**
      * {@inheritDoc}
      */
     public void execute()
@@ -278,6 +287,15 @@ public class PrepareReleaseMojo
         config.setWaitBeforeTagging( waitBeforeTagging );
         config.setProjectVersionPolicyId( projectVersionPolicyId );
         config.setProjectNamingPolicyId( projectTagNamingPolicyId );
+
+        if ( additionalCommittedIncludes != null )
+        {
+            config.setAdditionalCommittedIncludes( Arrays.asList( additionalCommittedIncludes ) );
+        }
+        else
+        {
+            config.setAdditionalCommittedIncludes( Collections.<String>emptyList() );
+        }
 
         if ( checkModificationExcludeList != null )
         {
